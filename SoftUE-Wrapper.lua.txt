@@ -1,0 +1,43 @@
+-- SoftUE Permanent Wrapper
+-- 載入你 GitHub 上的 SoftUE 腳本，再把背景圖換成 GitHub 永久連結
+-- 這個檔案很小（4KB），可以直接貼到 GitHub web 編輯器
+
+loadstring(game:HttpGet("https://raw.githubusercontent.com/glps11110101-sketch/SoftUe/refs/heads/main/FSQhjRgP.lua"))()
+
+task.spawn(function()
+    local Players = game:GetService("Players")
+    local CoreGui = game:GetService("CoreGui")
+    local lp = Players.LocalPlayer
+    local pg = lp and lp:WaitForChild("PlayerGui", 5)
+
+    local roots = {}
+    if typeof(gethui) == "function" then table.insert(roots, gethui()) end
+    if pg then table.insert(roots, pg) end
+    table.insert(roots, CoreGui)
+
+    local PERM_IMG = "https://raw.githubusercontent.com/glps11110101-sketch/SoftUe/refs/heads/main/qHBemfWO.jpeg"
+
+    local function fixBg()
+        for _, root in ipairs(roots) do
+            for _, d in ipairs(root:GetDescendants()) do
+                if d:IsA("ImageLabel") and d.Name == "XiaoUE_Background" then
+                    if d.Image ~= PERM_IMG then
+                        d.Image = PERM_IMG
+                    end
+                end
+            end
+        end
+    end
+
+    -- 等 UI 載入，然後持續修正背景圖（防止腳本重新套用舊 URL）
+    task.wait(10)
+    for _ = 1, 60 do
+        fixBg()
+        task.wait(1)
+    end
+    -- 之後每 5 秒檢查一次，永久維持
+    while true do
+        fixBg()
+        task.wait(5)
+    end
+end)
